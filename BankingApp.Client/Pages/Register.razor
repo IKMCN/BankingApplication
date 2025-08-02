@@ -1,0 +1,27 @@
+@page "/register"
+@using BankingApp.Client.Models
+@using BankingApp.Client.Services
+@inject AuthService AuthService
+@inject NavigationManager Nav
+
+<h3>Register</h3>
+
+<EditForm Model="@registerModel" OnValidSubmit="HandleRegister">
+    <InputText @bind-Value="registerModel.Username" placeholder="Username" class="form-control" />
+    <InputText @bind-Value="registerModel.Email" placeholder="Email" class="form-control" />
+    <InputText @bind-Value="registerModel.Password" placeholder="Password" class="form-control" type="password" />
+    <button type="submit" class="btn btn-primary mt-2">Register</button>
+</EditForm>
+
+@code {
+    private AuthenticationModel registerModel = new();
+
+    private async Task HandleRegister()
+    {
+        var success = await AuthService.Register(registerModel);
+        if (success)
+        {
+            Nav.NavigateTo("/login");
+        }
+    }
+}
